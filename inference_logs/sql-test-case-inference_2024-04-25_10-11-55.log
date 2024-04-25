@@ -1,0 +1,60 @@
+2024-04-25:10:11:55,324 INFO     [groq_entry.py:12] loading mapping data from 20240402_CUSTOMER360_CI_DIFA_LOG_AND_CGY(EDIT).xlsx
+2024-04-25:10:11:55,668 INFO     [groq_entry.py:19] Setup llama3-70b-8192 from groq
+2024-04-25:10:11:58,486 INFO     [groq_entry.py:108] Here are five test cases to validate the mapping process:
+
+**Test case 1**
+'description': Service is not null, expect Service to be copied to target field,
+'sql': 
+```sql
+SELECT 
+  CASE WHEN 'SERVICE1' IS NOT NULL THEN 'SERVICE1' 
+       WHEN 'SERVICE1' IS NULL AND 'TRANSFER' = 'TRANSFER' THEN 'TRANSFER' 
+  END AS TARGET_SERVICE
+```
+Expected output: `TARGET_SERVICE = 'SERVICE1'`
+
+**Test case 2**
+'description': Service is null, TRANS_TYPE is 'TRANSFER', expect 'TRANSFER' to be assigned to target field,
+'sql': 
+```sql
+SELECT 
+  CASE WHEN NULL IS NOT NULL THEN NULL 
+       WHEN NULL IS NULL AND 'TRANSFER' = 'TRANSFER' THEN 'TRANSFER' 
+  END AS TARGET_SERVICE
+```
+Expected output: `TARGET_SERVICE = 'TRANSFER'`
+
+**Test case 3**
+'description': Service is null, TRANS_TYPE is not 'TRANSFER', expect null to be assigned to target field,
+'sql': 
+```sql
+SELECT 
+  CASE WHEN NULL IS NOT NULL THEN NULL 
+       WHEN NULL IS NULL AND 'OTHER' = 'TRANSFER' THEN 'TRANSFER' 
+  END AS TARGET_SERVICE
+```
+Expected output: `TARGET_SERVICE = NULL`
+
+**Test case 4**
+'description': Service is not null, TRANS_TYPE is 'TRANSFER', expect Service to be copied to target field,
+'sql': 
+```sql
+SELECT 
+  CASE WHEN 'SERVICE2' IS NOT NULL THEN 'SERVICE2' 
+       WHEN 'SERVICE2' IS NULL AND 'TRANSFER' = 'TRANSFER' THEN 'TRANSFER' 
+  END AS TARGET_SERVICE
+```
+Expected output: `TARGET_SERVICE = 'SERVICE2'`
+
+**Test case 5**
+'description': Edge case, Service is null, TRANS_TYPE is null, expect null to be assigned to target field,
+'sql': 
+```sql
+SELECT 
+  CASE WHEN NULL IS NOT NULL THEN NULL 
+       WHEN NULL IS NULL AND NULL = 'TRANSFER' THEN 'TRANSFER' 
+  END AS TARGET_SERVICE
+```
+Expected output: `TARGET_SERVICE = NULL`
+
+These test cases cover different scenarios to validate the mapping process.
